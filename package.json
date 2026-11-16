@@ -1,0 +1,39 @@
+{
+  "name": "dsh-deepsight",
+  "version": "0.6.0",
+  "type": "module",
+  "description": "DeepSight deep-research kit for DeepSeek Harness: a deepsight agent preset, the DeepSight methodology skill bundled in this package, and three deterministic tools for research contracts, provenance-checked evidence audits, and ledger trends.",
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "research",
+    "methodology",
+    "evidence",
+    "agent-preset"
+  ],
+  "engines": {
+    "dsh": "^0.2.2-rc.3"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "docs",
+    "icon.svg",
+    "skills",
+    "LICENSE",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

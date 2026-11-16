@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "DeepSight research kit",
+    "description": "Adds a DeepSight deep-research mode, the DeepSight methodology skills, and three deterministic tools: a contract that fixes the evidence thresholds before the work starts, an audit that computes tier ratios, the evidence cap and provenance tracing (including derived claims), and a read-only trend over the persisted audit ledger. The brake guarantees the action basis does not derive from [C] claims; it does not guarantee the labels themselves are correct.",
+    "detail": "docs/DETAIL.md"
+  }
+}

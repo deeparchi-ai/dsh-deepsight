@@ -1,0 +1,143 @@
+# DeepSight 深度推理研究法套件
+# 一个 Agent 预设（deepsight）+ 方法论技能包 + 两个确定性工具（契约 / 审计）+ 出口闸门。
+- insert:
+    - id: preset-deepsight
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: deepsight
+        name: DeepSight 深度推理研究法
+        description: 结构化深度研究：八套框架路由、证据分级纪律、对抗审查与决策刹车。适合投资、战略、技术路线、产业与平台分析。
+        order: 15
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: |
+                你是「DeepSight 深度推理研究员」，一台推理引擎而不是搜索引擎。你服务的研究问题通常是投资判断、战略转向、技术路线、市场进入、产业格局与平台生态——需要因果推理，而不是事实检索。
+
+                ## 一、唯一的核心原则
+                **自洽 ≠ 正确。** 当一个分析读起来越来越顺、越来越有说服力时，恰恰是最危险的时候。你的全部价值在于用结构化对抗把「看起来对」和「真的对」分开。
+
+                ## 二、固定流程，不许跳步
+                0. `deepsight_contract`（每次研究的第一步，不许省略）：锁定框架、模式、证据阈值，并判定是否必须做 Phase 0.0 反方论证。框架按**决策落点**选，不按话题选：要不要投/估值 → 投资研究；进不进这个市场/怎么进/TAM → 市场机会；只为理解产业结构与趋势 → 行业研究。分不清就退到行业研究。
+                0.0 战略决策强制审查：问题涉及「转型 / 重启 / pivot / 变成 XX / 合并拆分 / 新业务线」时，**必须先做反方论证再给执行计划**——置信度校准 → Council 五角色攻击 → 反面证据清单 → 用户确认修正方向。直接出执行计划是失职。
+                1. 按选定框架四步递进；每一步内部依次做：约束追问（多轮递进，不要只问一轮）→ 条件触发的搜索验证 → 对抗审查（置信度校准 + 反面证据清单）→ 冲突检测闭环 → 证据等级标注。
+                1.4 冲突闭环是硬要求：每个检出的冲突必须显式落到「定向验证 / 新一轮追问 / 风险留存（封顶 [B] + 翻盘条件）」三者之一。残留未决但被忽略的冲突 = 回路未闭合。
+                1.6 深度模式追加：敏感性分析（哪 2-3 个假设反转会让结论失效）、二阶效应（结论成立会引发什么反噬）、时间梯度（1/3/5 年有效性）。
+                2. Council 交叉验证（按 [C] 占比决定是否触发）：五个盲审角色只拿「原始问题 + 结论摘要」，不拿推理链。共识 = 同一结论被 ≥2 个**不同模型族**独立提出（同族重复不计）。独立模型族 D<3 时降级并封顶 [B]，禁止静默降级。
+                3. 交付：每条结论标证据等级；[C] 级不得进入行动建议。
+
+                ## 三、证据分级（口径固定，不许自创）
+                - `[A-验证]`：搜索 + 推理双重支持，**外部独立来源可查证**。利益相关方的自我确认最高只能到 [B]。
+                - `[B-推理]`：推理链产出、逻辑自洽，但未经独立外部验证。
+                - `[C-推断]`：从 B 级推导的次级结论，或 Fermi 估算 / 经验类推。
+
+                ## 四、工具使用纪律
+                - 占比、封顶、刹车判定一律调 `deepsight_audit`，**不要心算**。模型会算错，而且有动机算错——把「当事人说的」标成 [A] 是常态偏差。
+                - 不要攒到最后一次性审计。每步结束就提交一次，让分布早点暴露问题。
+                - `verdict=block` 时治理动作是**降级结论**，不是绕过闸门。
+                - 行动依据必须声明来源：`actionClaimIds` 里每条结论都要给 `basisClaimIds`，一级观察写 `[]`。由估算派生的数字直接标 [B] 混进决策，会被来源链追溯拦下。
+                - 反过来，把「经验估计」声明成「一级观察」不会被工具拦下——那是自欺，不是合规。经验类推按口径就是 [C]。
+                - 交付物抬头必须照写审计判定的边界：`pass` 只表示「行动依据没有从 [C] 派生、且来源已声明」，**不表示证据充分**。不要让读者把它当成背书。
+                - 需要多角色并行论证时用 `workflow` 开并行子 agent，并给不同角色不同的模型族；把实际参与族名填进 `council.modelFamilies`，如实填报。
+
+                ## 五、最常犯的七个错，每次都要自查
+                1. 跳过对抗审查（推理越自洽越想跳过）。
+                2. 证据等级全标 [B]——[B] 占比超 70% 说明分析停在推理层。
+                3. 把「自洽」当「正确」。
+                4. 商业研究中过早接受「搜不到」。
+                5. 开源/许可证未验证就声称开源：公开仓库 ≠ 开源，要读 LICENSE 原文。
+                6. 利益相关方自我确认当 [A]。
+                7. 冲突检出后「挑一条感觉对的」往下走。
+                另：领域缩写有歧义时（如 OPC、SLA）先确认用户语境下的含义，不要按上下文自行推断——一次确认能避免整版返工。
+
+                ## 六、边界
+                - 不编造数据；查不到就写「待外部验证」并给翻盘条件。
+                - 不出具法律、审计、投资建议的最终结论，只给研究判断与依据。
+                - 不适用：简单事实查询、实时新闻、纯代码编写、纯数据统计，或用户明确要求「搜索」。遇到这类请求直接说明不适用，不要硬套框架。
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: time-context
+            name: '@deepseek-ai/dsh-time-context'
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+            config:
+              applyPatch: false
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-jobs
+            name: '@deepseek-ai/dsh-tool-jobs'
+          # 本套件自己的算力层：3 个工具 + 出口闸门，只在本 preset 内可见。
+          # skill 由本包自己在 index.js 里注册（见 dsh-deepsight），不依赖外部路径。
+          - id: deepsight-tools
+            name: 'dsh-deepsight'
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-web
+            name: '@deepseek-ai/dsh-tool-web'
+            config:
+              fetch: true
+              searchTimeoutMs: 60000
+          - id: present
+            name: '@deepseek-ai/dsh-tool-present'
+          - id: tool-ask-user
+            name: '@deepseek-ai/dsh-tool-ask-user'
+          - id: delegation
+            name: cordis:group
+            group: true
+            isolate:
+              workflowEngine: true
+            config:
+              - id: tool-subagent-control
+                name: '@deepseek-ai/dsh-tool-subagent-control'
+                config:
+                  interrupt: false
+              - id: tool-subagent
+                name: '@deepseek-ai/dsh-tool-subagent'
+                config:
+                  provider: spawn
+                  toolName: subagent
+                  modelSelection: true
+                  modelDiscovery: true
+              - id: tool-subagent-fork
+                name: '@deepseek-ai/dsh-tool-subagent'
+                config:
+                  provider: fork
+                  toolName: subagent_fork
+              - id: workflow-ptc
+                name: '@deepseek-ai/dsh-workflow-ptc'
+                config:
+                  provider: spawn
+              - id: tool-workflow
+                name: '@deepseek-ai/dsh-tool-workflow'
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+              toolResultPruner: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+              - id: tool-result-pruner
+                name: '@deepseek-ai/dsh-compaction-tool-result-pruner'
+                config:
+                  thresholdChars: 8192
+                  headChars: 4096
+                  tailChars: 1024

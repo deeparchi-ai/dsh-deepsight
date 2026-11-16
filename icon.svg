@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="DeepSight deep research kit">
+  <rect width="64" height="64" rx="14" fill="#111827"/>
+  <circle cx="30" cy="28" r="14" fill="none" stroke="#38BDF8" stroke-width="3.5"/>
+  <circle cx="30" cy="28" r="5.5" fill="#38BDF8" opacity="0.85"/>
+  <path d="M40.5 38.5 L52 50" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <g stroke-linecap="round" stroke-width="3">
+    <path d="M14 51 h10" stroke="#34D399"/>
+    <path d="M28 51 h8" stroke="#FBBF24"/>
+    <path d="M40 51 h10" stroke="#F87171"/>
+  </g>
+</svg>
