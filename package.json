@@ -1,6 +1,6 @@
 {
   "name": "dsh-deepsight",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "description": "DeepSight deep-research kit for DeepSeek Harness: a deepsight agent preset, the DeepSight methodology skill bundled in this package, and three deterministic tools for research contracts, provenance-checked evidence audits, and ledger trends.",
   "license": "MIT",

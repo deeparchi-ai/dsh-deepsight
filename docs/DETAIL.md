@@ -40,10 +40,13 @@
 
 落点解析顺序：
 
-1. 环境变量 `DSH_DEEPSIGHT_DIR`（想长期生效就写进 `$DSH_HOME/.env`）
-2. 兜底 `$DSH_HOME/deepsight`
+1. 环境变量 `DEEPSIGHT_LEDGER_DIR` —— **推荐写进 `$DSH_HOME/.env`**，随 profile 生效
+2. 兼容旧名 `DSH_DEEPSIGHT_DIR`（只能用系统环境变量设置，见下）
+3. 兜底 `$DSH_HOME/deepsight`
 
-**包内不含任何个人路径。** 想把它接到 Obsidian 归档目录，只需把 `DSH_DEEPSIGHT_DIR` 指过去。
+> ⚠️ **绝对不要把 `DSH_` 开头的变量写进 `$DSH_HOME/.env`。** 该前缀是 DSH 的保留命名空间，只允许启动环境设置；写进 `.env` 会让 DSH **拒绝启动**，报 `only the launching environment may set`。需要放进 `.env` 的路径请用 `DEEPSIGHT_LEDGER_DIR`。
+
+**包内不含任何个人路径。** 想把它接到 Obsidian 归档目录，只需把 `DEEPSIGHT_LEDGER_DIR` 指过去。
 
 ### `deepsight_trend`
 

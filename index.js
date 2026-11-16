@@ -77,11 +77,13 @@ const sessionRuns = new Map()
 const latestVerdict = new Map()
 
 /**
- * 账本目录解析顺序：DSH_DEEPSIGHT_DIR → $DSH_HOME/deepsight。
- * 不含任何个人路径，装到别人机器上也能用；想指定位置就设环境变量。
+ * 账本目录解析顺序：DEEPSIGHT_LEDGER_DIR →（兼容旧名）DSH_DEEPSIGHT_DIR → $DSH_HOME/deepsight。
+ *
+ * 对外文档只写 DEEPSIGHT_LEDGER_DIR：`DSH_` 前缀是 DSH 的保留命名空间，只允许启动环境设置，
+ * 写进 $DSH_HOME/.env 会导致 DSH 拒绝启动（only the launching environment may set）。
  */
 async function resolveLedgerDir() {
-	const explicit = process.env.DSH_DEEPSIGHT_DIR
+	const explicit = process.env.DEEPSIGHT_LEDGER_DIR ?? process.env.DSH_DEEPSIGHT_DIR
 	if (explicit !== undefined && explicit.trim() !== '') return explicit.trim()
 	return join(process.env.DSH_HOME ?? join(homedir(), '.dsh'), 'deepsight')
 }
